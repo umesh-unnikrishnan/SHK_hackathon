@@ -6,11 +6,13 @@
 
     
     
-    
+    <style>
+    </style>
 </head>
     
     
 <body>
+    
 <div id="map" style="width:100%;height:500px"></div>
     
     
@@ -20,18 +22,18 @@
       // Each marker is labeled with a single alphabetical character.
       var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       var labelIndex = 0;
+        
+        var map = '';
 
       function initialize() {
-        var bangalore = { lat: 12.97, lng: 77.59 };
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 12,
-          center: bangalore
-        });
+              
+              
+              getLocation(); //Handles everything including map loading
 
         // This event listener calls addMarker() when the map is clicked.
         google.maps.event.addListener(map, 'click', function(event) {
-            console.info(event.latLng);
-          addMarker(event.latLng, map);
+            console.log(event.latLng.lat());
+            console.log(event.latLng.lng());
         });
 
         // Add a marker at the center of the map.
@@ -47,7 +49,26 @@
           label: labels[labelIndex++ % labels.length],
           map: map
         });
+          
+          
       }
+        
+function getLocation() {
+    
+    if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(function(cordinatesData){
+            
+            var currentLocation = { lat: cordinatesData.coords.latitude, lng:cordinatesData.coords.longitude };
+              map = new google.maps.Map(document.getElementById('map'), {
+                  zoom: 12,
+                  center: currentLocation
+                });
+                                                 
+                                                 });
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
 
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
